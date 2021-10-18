@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<!-- Time spent: 3 hours 
+not very accurate, should use time stamp and increment manually rather than using a Date Object-->
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Simple Stopwatch</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
+    <style>
+      *{
+        margin:0;
+        padding:0;
+        box-sizing: border-box;
+      }
+      :root {
+        font-size: 13px;
+        color: white;
+        font-family: "Audiowide";
+      }
+      body {
+        background-color: black;
+        text-align: center;
+      }
+      .container {
+        
+        margin:0 auto;
+        width:500px; height: 100vh;
+        text-align: center;
+      }
+      .clock {
+        font-size: 50px;
+        
+      }
+
+      button{
+        font-family: inherit;
+        
+        width: 70px; height: 70px;
+        border-radius: 100%;
+        
+        margin: 0 20px;
+        
+        color:white;
+        background-color: black;
+        text-transform: uppercase;
+        font-weight: 800;
+      }
+
+      .btnLabel{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin:auto;
+        width: 60px; height: 60px;
+        border-radius: 100%;
+      }
+      .reset, .lap {
+        background-color:grey;
+      }
+
+      .start {
+        border: cyan 1px solid;
+      }
+      .start .btnLabel {
+        background-color:cyan;
+      }
+
+      .stop {
+        border: violet 1px solid;
+      }
+      .stop .btnLabel {
+        background-color:violet;
+      }
+      .hidden{
+        display: none;
+      }
+
+      .lap-log{
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 20px;
+        border:hotpink dotted 2px;
+
+        margin-top:15%;
+        
+        
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <p class="clock"></p>
+      
+      <button class="reset"><div class="btnLabel">Reset</div></button>
+      
+      <button class="lap hidden"><div class="btnLabel">Lap</div></button>
+      
+      <button class="start"><div class="btnLabel">Start</div></button>
+    
+      <button class="stop hidden"><div class="btnLabel">Stop</div></button>
+      
+      <div class="lap-log">Lap log</div>
+    </div>
+    <script>
+      //grab the buttons from doc
+      let startBtn = document.querySelector(".start");
+      let stopBtn = document.querySelector(".stop");
+      let resetBtn = document.querySelector(".reset");
+      let lapBtn = document.querySelector(".lap");
+      let lapLog = document.querySelector(".lap-log");
+
+      
+      function incrementSecond () {
+
+        let add_second = date.getSeconds() + 1;
+        date.setSeconds(add_second);
+     
+      }
+
+
+      function displayTime() {
+        
+
+        time = date.toLocaleTimeString();
+        console.log(date.getMilliseconds());
+        document.querySelector('.clock').textContent = time;
+
+      }
+
+      //MAIN FRAME INTERVAL FOR THE STOPWATCH
+
+      var date = new Date(98,1);
+      var createClock, time;
+
+      displayTime();
+      
+      // var createClock = setInterval(displayTime, 1000);
+      
+      // Start button
+      
+      //start the clock when clicked
+      startBtn.addEventListener("click", () => {
+        //get timestamp of clicked start
+        
+        //if (timeAfterClicked !== 1000) return
+        //increment second, display time 
+        
+        // clearInterval(createClock);
+        createClock = setInterval( () => {
+          incrementSecond ();
+          displayTime();
+        }, 1000);
+
+        //change to stop button
+        startBtn.className += " hidden";
+        //leave off the hidden class 
+        stopBtn.className = stopBtn.className.split(" ")[0]; 
+
+        //Reset buttn change to Lap
+        resetBtn.className += " hidden";
+        lapBtn.className = lapBtn.className.split(" ")[0];
+      })
+      
+      
+      // STOP button
+      //cant cancel interval, cuz 
+      stopBtn.addEventListener("click", () => {
+        
+        clearInterval(createClock);
+        //change to Start button
+        stopBtn.className += " hidden";
+        startBtn.className = startBtn.className.split(" ")[0];;
+
+        //Reset button shows up
+        lapBtn.className += " hidden";
+        resetBtn.className = resetBtn.className.split(" ")[0];
+      })
+
+
+      // RESET button
+      resetBtn.addEventListener("click", () => {
+        //reset date object 
+        date.setHours(0,0,0,0);
+        displayTime();
+
+        //clear logged history
+        lapLog.textContent = "Lap log"
+        
+      })    
+
+
+      //LAP button
+      //record the time add a new p element to lap-log 
+      lapBtn.addEventListener("click", () => {
+        const newP = document.createElement("p");
+        newP.textContent = time;
+        lapLog.appendChild(newP);
+      })        
+
+
+    </script>
+  </body>
+</html>
